@@ -559,6 +559,20 @@ static int PlayersColumn_Sort(const struct ServerInfo* a, const struct ServerInf
 	return b->players - a->players;
 }
 
+static void FeaturedColumn_Draw(struct ServerInfo* row, struct DrawBoolArgs* args, struct LTableCell* cell) {
+	args->bool = row->featured;
+}
+static int FeaturedColumn_Sort(const struct ServerInfo* a, const struct ServerInfo* b) {
+	return String_Compare(&b->featured, &a->featured);
+}
+
+static void IPColumn_Draw(struct ServerInfo* row, struct DrawTextArgs* args, struct LTableCell* cell) {
+	args->text = row->ip;
+}
+static int IPColumn_Sort(const struct ServerInfo* a, const struct ServerInfo* b) {
+	return String_Compare(&b->ip, &a->ip);
+}
+
 static void UptimeColumn_Draw(struct ServerInfo* row, struct DrawTextArgs* args, struct LTableCell* cell) {
 	int uptime = row->uptime;
 	char unit  = 's';
@@ -586,12 +600,16 @@ static int SoftwareColumn_Sort(const struct ServerInfo* a, const struct ServerIn
 	return String_Compare(&b->software, &a->software);
 }
 
-static struct LTableColumn tableColumns[5] = {
+
+
+static struct LTableColumn tableColumns[7] = {
 	{ "",          15, FlagColumn_Draw,     NULL,                false, false },
 	{ "Name",     328, NameColumn_Draw,     NameColumn_Sort,     true,  true  },
 	{ "Players",   73, PlayersColumn_Draw,  PlayersColumn_Sort,  true,  true  },
-	{ "Uptime",    73, UptimeColumn_Draw,   UptimeColumn_Sort,   true,  true  },
-	{ "Software", 143, SoftwareColumn_Draw, SoftwareColumn_Sort, false, true  }
+	{ "IP",        143, IPColumn_Draw,       IPColumn_Sort,       true, true  },
+	{ "Uptime",    73,  UptimeColumn_Draw,   UptimeColumn_Sort,   true,  true  },
+	{ "Featured",  143, FeaturedColumn_Draw,       IPColumn_Sort,       true, true  },
+	{ "Software",  143, SoftwareColumn_Draw, SoftwareColumn_Sort, false, true  }
 };
 
 
